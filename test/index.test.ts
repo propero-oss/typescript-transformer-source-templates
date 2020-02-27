@@ -1,5 +1,12 @@
 import { template, TemplateFactory } from "src/main";
-import { isSourceFile, VariableStatement, isVariableStatement, isVariableDeclaration, ObjectLiteralExpression, isObjectLiteralExpression } from "typescript";
+import {
+  isSourceFile,
+  VariableStatement,
+  isVariableStatement,
+  isVariableDeclaration,
+  ObjectLiteralExpression,
+  isObjectLiteralExpression
+} from "typescript";
 
 const source = "const HELLO = 'WORLD';";
 const tmpl = template(source);
