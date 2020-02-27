@@ -24,11 +24,11 @@ const contentNodes = aggregationTemplate.statements({ AGGREGATION: 'content', VA
 const footerNodes = aggregationTemplate.statements({ AGGREGATION: 'footer' });
 ```
 
-#### Casting and expression templates
+#### Casting and member templates
 ```typescript
 import { template } from "@propero/typescript-transformer-source-templates";
-import { ObjectLiteralExpression } from "typescript";
+import { MethodDeclaration } from "typescript";
 
-const objectTemplate = template("{ render() {RENDER_CODE} }");
-const render = objectTemplate.expression<ObjectLiteralExpression>({ RENDER_CODE: generateRenderCode() }).properties.find(it => it.name === "render");
+const methodTemplate = template("render() {RENDER_CODE}");
+const render = methodTemplate.objectMember<MethodDeclaration>({ RENDER_CODE: "return 'hello world';" });
 ```
