@@ -5,7 +5,9 @@ import {
   isVariableStatement,
   isVariableDeclaration,
   ObjectLiteralExpression,
-  isObjectLiteralExpression
+  isObjectLiteralExpression,
+  MethodDeclaration,
+  isMethodDeclaration
 } from "typescript";
 
 const source = "const HELLO = 'WORLD';";
@@ -79,6 +81,16 @@ describe("TemplateFactory", () => {
     });
     it("should clone the expression", () => {
       expect(expr.parent).toBeUndefined();
+    });
+  });
+  describe("#objectMember()", () => {
+    const method = template("HELLO() { return 'WORLD' }").objectMember<MethodDeclaration>();
+    it("should extract an object member", () => {
+      expect(method).toBeDefined();
+      expect(isMethodDeclaration(method)).toBeTruthy();
+    });
+    it("should clone the method declaration", () => {
+      expect(method.parent).toBeUndefined();
     });
   });
 });

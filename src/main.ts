@@ -8,7 +8,9 @@ import {
   VariableStatement,
   VariableDeclaration,
   SourceFile,
-  NodeArray
+  NodeArray,
+  ObjectLiteralElementLike,
+  ObjectLiteralExpression
 } from "typescript";
 
 interface Replacements {
@@ -92,6 +94,17 @@ export class TemplateFactory {
   }
 
   /**
+   * Build an object literal member from the internal source.
+   * @param replacements - The replacement map to apply to the source {@link replace}
+   * @param source - Optionally you can provide your own source instead of the internal source
+   * @return A typescript object literal, cloned and ready for insertion / replacement
+   * @public
+   */
+  public objectMember<T extends ObjectLiteralElementLike>(replacements?: Replacements, source: string = this.source): T {
+    return this.clone(this.unclonedObjectMember<T>(replacements, source));
+  }
+
+  /**
    * Builds a list of statements from the internal source.
    * @param replacements - The replacement map to apply to the source {@link replace}
    * @param source - Optionally you can provide your own source instead of the internal source
@@ -137,6 +150,21 @@ export class TemplateFactory {
   protected unclonedExpression<T extends Expression = Expression>(replacements?: Replacements, source: string = this.source): T {
     const wrapped = `const __TEMPLATE_REPLACE__${Date.now()}_${0 | (Math.random() * 10000)} = ${source};`;
     return this.unclonedDeclaration(replacements, wrapped).initializer as T;
+  }
+
+  /**
+   * Build an object literal member from the internal source.
+   * @param replacements - The replacement map to apply to the source {@link replace}
+   * @param source - Optionally you can provide your own source instead of the internal source
+   * @return A typescript object literal, not fit for insertion yet
+   * @internal
+   */
+  protected unclonedObjectMember<T extends ObjectLiteralElementLike = ObjectLiteralElementLike>(
+    replacements?: Replacements,
+    source: string = this.source
+  ): T {
+    const wrapped = `{ ${source} }`;
+    return this.unclonedExpression<ObjectLiteralExpression>(replacements, wrapped).properties[0] as T;
   }
 
   /**
