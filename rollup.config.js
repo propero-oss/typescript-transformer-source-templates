@@ -50,7 +50,7 @@ export default {
     paths(),
     commonjs(),
     nodeResolve(),
-    ts({ tsconfig: "tsconfig.build.json", exclude: ["**/*.html"] }),
+    ts({ tsconfig: "tsconfig.build.json" }),
     sequential(
       [
         apiExtractor({
